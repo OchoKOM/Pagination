@@ -7,11 +7,11 @@ function loadProducts(page, lastProductID) {
     if (isLoading || !hasMorePages) return;
     isLoading = true;
     document.getElementById('loader').style.display = 'block';
-    document.getElementById('error-message').style.display = 'none';
+    document.getElementById('error-message').classList.remove('show');
 
     const xhr = new XMLHttpRequest();
     xhr.open('GET', `fetch_products.php?page=${page}&lastProductID=${lastProductID}`, true);
-    xhr.onload = function () {
+    xhr.onload = ()=> {
         if (xhr.status === 200) {
             try {
                 const response = JSON.parse(xhr.responseText);
@@ -22,11 +22,13 @@ function loadProducts(page, lastProductID) {
                     lastLoadedProductID = products[products.length - 1].id;
                     if (response.isLastPage) {
                         hasMorePages = false;
-                        document.getElementById('end-of-content').style.display = 'block';
+                        document.getElementById('end-of-content').classList.add("show");
+                    }else{
+                        currentPage++
                     }
                 } else {
                     hasMorePages = false;
-                    document.getElementById('end-of-content').style.display = 'block';
+                    document.getElementById('end-of-content').classList.add("show");
                 }
             } catch (error) {
                 console.log('Parsing error:', error);
@@ -66,25 +68,24 @@ function showError(message) {
     const errorMessage = document.getElementById('error-message');
     const errorDiv = errorMessage.querySelector('.message') 
     errorDiv.textContent = message;
-    errorMessage.style.display = 'block';
+    errorMessage.classList.add('show')
     document.getElementById('loader').style.display = 'none';
 
     const retryButton = errorMessage.querySelector('.retry-button');
 
     retryButton.onclick = ()=>{
-        document.getElementById('error-message').style.display = 'none';
         loadProducts(currentPage, lastLoadedProductID)
     }
 }
 
-window.onscroll = function () {
+onscroll = ()=> {
     if ((window.innerHeight + window.scrollY + 200) >= document.body.offsetHeight) {
         loadProducts(currentPage, lastLoadedProductID);
     }
 };
 
 // Événement pour les appareils tactiles
-window.ontouchmove = function () {
+ontouchmove = ()=> {
     if ((window.innerHeight + window.scrollY + 200) >= document.body.offsetHeight) {
         loadProducts(currentPage, lastLoadedProductID);
     }
