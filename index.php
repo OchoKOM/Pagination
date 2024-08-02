@@ -10,7 +10,7 @@
 
 <body>
     <div class="container">
-        <h1>Infinite Scroll</h1>
+        <h1 id="top-title">Infinite Scroll</h1>
         <div id="product-list"></div>
         <div id="loader" style="display: none;">
             <svg class="loader" viewBox="25 25 50 50" stroke-width="5">
@@ -19,7 +19,7 @@
         </div>
         <div id="end-of-content">
             <p class="message">There's no more product to load</p>
-            <button class="refresh-button">Refresh</button>
+            <a href="#top-title"><button class="refresh-button">Go back on top</button></a>
         </div>
         <div id="error-message">
             <p class="message">Failed to load products. </p>
